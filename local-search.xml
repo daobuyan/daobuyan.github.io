@@ -4,11 +4,38 @@
   
   
   <entry>
+    <title>20250307exec</title>
+    <link href="/2025/03/07/20250307exec/"/>
+    <url>/2025/03/07/20250307exec/</url>
+    
+    <content type="html"><![CDATA[<h1 id="今日完成"><a href="#今日完成" class="headerlink" title="今日完成"></a>今日完成</h1><ul><li><input disabled="" type="checkbox"> 完成Acwing算法基础课 动态规划一节课</li><li><input disabled="" type="checkbox"> 看下xv6本节实验的要求和具体内容</li><li><input disabled="" type="checkbox"> 雅思 50 个单词</li><li><input disabled="" type="checkbox"> 雅思英语100句翻译 10句</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>plan &amp; exec</category>
+      
+      <category>exec</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>计划</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>selenium脚本初始化</title>
     <link href="/2025/03/06/selenium%E8%84%9A%E6%9C%AC%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
     <url>/2025/03/06/selenium%E8%84%9A%E6%9C%AC%E5%88%9D%E5%A7%8B%E5%8C%96/</url>
     
-    <content type="html"><![CDATA[<h1 id="selenium-控制浏览器"><a href="#selenium-控制浏览器" class="headerlink" title="selenium 控制浏览器"></a>selenium 控制浏览器</h1><p>需要现在本地终端打开浏览器的调试模式</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 以Edge浏览器为例</span><br><span class="hljs-string">./msedge.exe</span>  <span class="hljs-string">--remote-debugging-port</span> <span class="hljs-string">=</span> <span class="hljs-number">9222</span><br><span class="hljs-comment"># 这里的端口号只要是没有被占用的都可以</span><br><span class="hljs-comment"># 注意需要在浏览器对应的目录下才可以</span><br><br><span class="hljs-string">netstat</span> <span class="hljs-string">-aon</span> <span class="hljs-string">|</span> <span class="hljs-attr">findstr :</span> <span class="hljs-number">9222</span><br><span class="hljs-comment"># 查看该端口是否被占用，占用会出现含listen的语句 </span><br></code></pre></td></tr></table></figure><p>然后在程序中执行以下代码，查看是否浏览器按预定执行</p><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">from</span> selenium <span class="hljs-keyword">import</span> webdriver<br><span class="hljs-keyword">from</span> selenium.chrome.<span class="hljs-keyword">options</span> <span class="hljs-keyword">import</span> <span class="hljs-keyword">Options</span><br><br>web_option = <span class="hljs-keyword">Options</span>()<br>web_option.add_experimental_option(&quot;debuggerAddress&quot;, &quot;127.0.0.1 : 9222&quot;)<br><br>driver = webdriver.edge(<span class="hljs-keyword">options</span> = web_option)<br>driver.<span class="hljs-keyword">get</span>(url)<br><br># &quot;执行体&quot;<br><br>driver.quit()<br><br></code></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h1 id="selenium-控制浏览器"><a href="#selenium-控制浏览器" class="headerlink" title="selenium 控制浏览器"></a>selenium 控制浏览器</h1><p>需要现在本地终端打开浏览器的调试模式</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 以Edge浏览器为例</span><br><span class="hljs-string">./msedge.exe</span>  <span class="hljs-string">--remote-debugging-port</span> <span class="hljs-string">=</span> <span class="hljs-number">9222</span><br><br><span class="hljs-comment"># 这里的端口号只要是没有被占用的都可以</span><br><span class="hljs-comment"># 注意需要在浏览器对应的目录下才可以</span><br><br><span class="hljs-string">netstat</span> <span class="hljs-string">-aon</span> <span class="hljs-string">|</span> <span class="hljs-attr">findstr :</span> <span class="hljs-number">9222</span><br><span class="hljs-comment"># 查看该端口是否被占用，占用会出现含listen的语句 </span><br></code></pre></td></tr></table></figure><p>然后在程序中执行以下代码，查看是否浏览器按预定执行</p><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">from</span> selenium <span class="hljs-keyword">import</span> webdriver<br><span class="hljs-keyword">from</span> seleniumwwebdriver.Edge.<span class="hljs-keyword">options</span> <span class="hljs-keyword">import</span> <span class="hljs-keyword">Options</span><br><br>web_option = <span class="hljs-keyword">Options</span>()<br>web_option.add_experimental_option(&quot;debuggerAddress&quot;, &quot;127.0.0.1 : 9222&quot;)<br><br>driver = webdriver.Edge(<span class="hljs-keyword">options</span> = web_option)<br>driver.<span class="hljs-keyword">get</span>(url)<br><br># &quot;执行体&quot;<br><br>driver.quit()<br><br></code></pre></td></tr></table></figure><p><em>以上代码，暂时无法在我的电脑本地执行成功，会出现两种报错：</em><br><em>“ target window already closed “ 错误</em><br><em>“ session not created ···  not reachable “ 错误</em></p>]]></content>
     
     
     <categories>
