@@ -4,25 +4,23 @@
   
   
   <entry>
-    <title>lab3 pgtbl</title>
-    <link href="/2025/03/26/lab3-pgtbl/"/>
-    <url>/2025/03/26/lab3-pgtbl/</url>
+    <title>内存池</title>
+    <link href="/2025/04/15/%E5%86%85%E5%AD%98%E6%B1%A0/"/>
+    <url>/2025/04/15/%E5%86%85%E5%AD%98%E6%B1%A0/</url>
     
-    <content type="html"><![CDATA[<h1 id="pte-print"><a href="#pte-print" class="headerlink" title="pte print"></a>pte print</h1><p>累计用时 2h  难度 easy</p><p>重要函数：</p><ul><li>freewalk</li><li>walk</li></ul><p>使用的宏：</p><ul><li>PTE2PA</li></ul><p>实际上关键是理解 freewalk 的代码</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">pagetable_t</span> pagetable;<br><span class="hljs-type">pte_t</span> pte = pagetable[<span class="hljs-built_in">PX</span>(level,va)];<br>pagetable = (<span class="hljs-type">void</span>*) <span class="hljs-built_in">PTE2PA</span>(pte); <span class="hljs-comment">// 找到对应的物理页面地址 ，该页面就是页表 使用（void*）转化为指针</span><br><br></code></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h1 id="内存池"><a href="#内存池" class="headerlink" title="内存池"></a>内存池</h1><h3 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h3><p>5h * 6</p><h2 id="v1"><a href="#v1" class="headerlink" title="v1"></a>v1</h2><p>使用哈希表固定大小的进行分配内存<br><img src="/../images/memorypoolv1.png" alt="版本1"></p><p>关键数据结构</p><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs abnf">struct Slot<br>&#123;<br>    Slot* next<span class="hljs-comment">;</span><br>&#125;<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure><p>HashBucket类的主要数据结构是memorypool的数组，也就是每个桶对应一个memorypool，其blocksize均为4KB，而slotsize则不同，<br>哈希索引会选择不同的桶，去寻找其freelist是否有内存，不够则进行申请allocateNewblock()</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">MemoryPool::allocateNewBlock</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-type">void</span>* newblock = <span class="hljs-keyword">operator</span> <span class="hljs-built_in">new</span>(Blocksize_);   <span class="hljs-comment">// 通过new实现</span><br>        <span class="hljs-built_in">reinterpret_cast</span>&lt;Slot*&gt;(newblock)-&gt;next = firstSlot_;  <span class="hljs-comment">// 头插法</span><br>        firstSlot_ = <span class="hljs-built_in">reinterpret_cast</span>&lt;Slot*&gt;(newblock); <br><br>        <span class="hljs-type">char</span>* body = <span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">char</span>*&gt;(newblock) + <span class="hljs-built_in">sizeof</span>(Slot*);   <span class="hljs-comment">// newblock 开始的位置存储了一个Slot*  就是next</span><br>        <span class="hljs-type">size_t</span> paddingSize = <span class="hljs-built_in">paddpoint</span>(body, Slotsize_);  <span class="hljs-comment">// 内存对齐</span><br>        curSlot_ = <span class="hljs-built_in">reinterpret_cast</span>&lt;Slot*&gt;(body+paddingSize); <span class="hljs-comment">// 对照allocate()可发现最后一个slot不会被使用！！</span><br><br>        lastSlot_ = <span class="hljs-built_in">reinterpret_cast</span>&lt;Slot*&gt;(<span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">size_t</span>&gt;(newblock) + Blocksize_ - Slotsize_ <span class="hljs-number">+1</span>);  <span class="hljs-comment">// 这是在找最后一个Slot</span><br><br>        freelist_ = <span class="hljs-literal">nullptr</span>;<br>    &#125;<br><br></code></pre></td></tr></table></figure><h2 id="v2-与-v3"><a href="#v2-与-v3" class="headerlink" title="v2 与 v3"></a>v2 与 v3</h2><p>v2 v3的区别十分的小，只是多了个一个变量 batchnum ，这个变量会使在分配的时候，往往比原先多分配几个内存块给threadcache</p><p>下面以一个内存块的角度大致去梳理了下v2 v3 ，这两个版本的框架都是一致的。</p><p>！<a href="../images/memorypoolv2v3.png">版本2-3</a></p><p>框架的理解比较简单，但是具体的实现就会有许多的疑问，这个得多思考多梳理。</p><p>目前，内存池的这三个实现依旧可以发现一些问题：</p><ul><li>代码中函数的参数统一<ul><li>传入的参数 有的size 有的index，其实完全可以在函数内部进行转换，统一为size</li></ul></li><li>命名规范</li><li>代码的逻辑上仍然不足<ul><li>内存对齐 以避免 跨行读取 提高性能 但是实现中的内存对齐并不一定能做到 地址对齐 </li><li>一些代码实现会导致内存泄露问题</li></ul></li></ul>]]></content>
     
     
     <categories>
       
-      <category>techniques</category>
-      
-      <category>os</category>
+      <category>projects</category>
       
     </categories>
     
     
     <tags>
       
-      <tag>os</tag>
+      <tag>学习笔记</tag>
       
     </tags>
     
@@ -184,33 +182,6 @@
       <category>plan &amp; exec</category>
       
       <category>exec</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>计划</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>三月计划</title>
-    <link href="/2025/03/06/%E4%B8%89%E6%9C%88%E8%AE%A1%E5%88%92/"/>
-    <url>/2025/03/06/%E4%B8%89%E6%9C%88%E8%AE%A1%E5%88%92/</url>
-    
-    <content type="html"><![CDATA[<h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><ul><li><input disabled="" type="checkbox"> 完成Acwing的算法基础课程+配套习题</li><li><input disabled="" type="checkbox"> 对模板进行重复记忆至脑中有清晰的思路</li></ul><h1 id="xv6实验"><a href="#xv6实验" class="headerlink" title="xv6实验"></a>xv6实验</h1><ul><li><input disabled="" type="checkbox"> 每2~3天完成一个lab，注意编写error文档和阅读文档</li></ul><h1 id="英语"><a href="#英语" class="headerlink" title="英语"></a>英语</h1><ul><li><input disabled="" type="checkbox"> 每天50个单词</li><li><input disabled="" type="checkbox"> 雅思写作书每天一个计划内容</li></ul>]]></content>
-    
-    
-    <categories>
-      
-      <category>plan &amp; exec</category>
-      
-      <category>plan</category>
       
     </categories>
     

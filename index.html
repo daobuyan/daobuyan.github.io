@@ -229,15 +229,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/03/26/lab3-pgtbl/" target="_self">
-          lab3 pgtbl
+        <a href="/2025/04/15/%E5%86%85%E5%AD%98%E6%B1%A0/" target="_self">
+          内存池
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/03/26/lab3-pgtbl/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/15/%E5%86%85%E5%AD%98%E6%B1%A0/" target="_self">
         <div>
-          pte print累计用时 2h  难度 easy 重要函数：  freewalk walk  使用的宏：  PTE2PA  实际上关键是理解 freewalk 的代码 1234pagetable_t pagetable;pte_t pte = pagetable[PX(level,va)];pagetable = (void*) PTE2PA(pte); // 找到对应的物理页面地址 ，该页面就
+          内存池时间5h * 6 v1使用哈希表固定大小的进行分配内存 关键数据结构 1234struct Slot&#123;    Slot* next;&#125;; HashBucket类的主要数据结构是memorypool的数组，也就是每个桶对应一个memorypool，其blocksize均为4KB，而slotsize则不同，哈希索引会选择不同的桶，去寻找其freelist是否有内存，不够则进行
         </div>
       </a>
 
@@ -245,8 +245,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2025-03-26 18:44" pubdate>
-              2025-03-26
+            <time datetime="2025-04-15 14:48" pubdate>
+              2025-04-15
             </time>
           </div>
         
@@ -261,15 +261,8 @@
     
       <span class="category-chain">
         
-  <a href="/categories/techniques/" class="category-chain-item">techniques</a>
+  <a href="/categories/projects/" class="category-chain-item">projects</a>
   
-  
-    <span>></span>
-    
-  <a href="/categories/techniques/os/" class="category-chain-item">os</a>
-  
-  
-
   
 
       </span>
@@ -283,7 +276,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/os/">#os</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
             
           </div>
         
@@ -686,74 +679,6 @@
     <span>></span>
     
   <a href="/categories/plan-exec/exec/" class="category-chain-item">exec</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%AE%A1%E5%88%92/">#计划</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/03/06/%E4%B8%89%E6%9C%88%E8%AE%A1%E5%88%92/" target="_self">
-          三月计划
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/03/06/%E4%B8%89%E6%9C%88%E8%AE%A1%E5%88%92/" target="_self">
-        <div>
-          算法  完成Acwing的算法基础课程+配套习题  对模板进行重复记忆至脑中有清晰的思路  xv6实验  每2~3天完成一个lab，注意编写error文档和阅读文档  英语  每天50个单词  雅思写作书每天一个计划内容
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-03-06 17:36" pubdate>
-              2025-03-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/plan-exec/" class="category-chain-item">plan &amp; exec</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/plan-exec/plan/" class="category-chain-item">plan</a>
   
   
 
