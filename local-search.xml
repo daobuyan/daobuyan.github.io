@@ -4,6 +4,60 @@
   
   
   <entry>
+    <title>docker使用</title>
+    <link href="/2025/04/17/docker%E4%BD%BF%E7%94%A8/"/>
+    <url>/2025/04/17/docker%E4%BD%BF%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<h1 id="配置镜像网址"><a href="#配置镜像网址" class="headerlink" title="配置镜像网址"></a>配置镜像网址</h1><p>国内连接docker的速度比较慢，一般会使用国内的镜像网址。配置方法如下:</p><p>windows上直接打开docker desktop<br>在setting 中找到 docker engine 向其中添加配置信息：</p><figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fsharp"><span class="hljs-string">&quot;registry-mirrors&quot;</span><span class="hljs-operator">:</span> <span class="hljs-meta">[&lt;镜像网址&gt;]</span>  # 自行搜索最新的网址保证使用<br></code></pre></td></tr></table></figure><p>可以通过<code>docker info</code>查看自己docker的配置信息，找到 Registry Mirrors 即可知道是否成功配置</p><h1 id="docker常用命令"><a href="#docker常用命令" class="headerlink" title="docker常用命令"></a>docker常用命令</h1><h2 id="基本使用命令"><a href="#基本使用命令" class="headerlink" title="基本使用命令"></a>基本使用命令</h2><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs axapta">docker image pull &lt;reposition&gt;/&lt;image_name&gt;<br><br>docker image ls <br><br>docker <span class="hljs-built_in">container</span> run &lt;image_name&gt;  <span class="hljs-meta"># 具有自动抓取功能，本地没有就去默认仓库抓取pull </span><br>docker <span class="hljs-built_in">container</span> run --rm &lt;image_name&gt; <span class="hljs-meta"># 在运行结束后自动删除container</span><br><br>docker <span class="hljs-built_in">container</span> ls  <span class="hljs-meta"># 不会列出终止的容器</span><br>docker <span class="hljs-built_in">container</span> ls --all <span class="hljs-meta"># 列出包含终止但未删除的容器</span><br><br><span class="hljs-meta"># 有的容器在执行后会自动终止，但是有的不会，此时需要手动终止   【终止容器不会删除容器】</span><br>docker <span class="hljs-built_in">container</span> kill &lt;container_ID&gt;<br><br>docker <span class="hljs-built_in">container</span> rm &lt;container_ID&gt; <span class="hljs-meta"># 删除容器</span><br><br></code></pre></td></tr></table></figure><h2 id="生成image"><a href="#生成image" class="headerlink" title="生成image"></a>生成image</h2><p>制作自己的 image </p><ul><li>在项目的根目录下 编写 .dockerignore 文件直接写入需要忽略的文件或目录 大致方式与 .gitignore 类似</li><li>在项目的根目录下 新建一个Dockerfile文件</li></ul><p>Dockerfile 示例  来源于 &lt;阮一峰&gt;</p><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> node:<span class="hljs-number">8.4</span> ：该 image 文件继承官方的 node image，冒号表示标签，这里标签是<span class="hljs-number">8.4</span>，即<span class="hljs-number">8.4</span>版本的 node。<br><span class="hljs-keyword">COPY</span><span class="language-bash"> . /app ：将当前目录下的所有文件（除了.dockerignore排除的路径），都拷贝进入 image 文件的/app目录。</span><br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app ：指定接下来的工作路径为/app。</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> npm install ：在/app目录下，运行npm install命令安装依赖。注意，安装后所有的依赖，都将打包进入 image 文件。</span><br><span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">3000</span> ：将容器 <span class="hljs-number">3000</span> 端口暴露出来， 允许外部连接这个端口。<br></code></pre></td></tr></table></figure><p>然后可以在中端执行</p><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs excel">docker <span class="hljs-built_in">image</span> build -<span class="hljs-built_in">t</span> koa-demo .        # -<span class="hljs-built_in">t</span> 指定<span class="hljs-built_in">image</span>名称<br># 或者<br>docker <span class="hljs-built_in">image</span> build -<span class="hljs-built_in">t</span> koa-de<span class="hljs-symbol">mo:0</span>.<span class="hljs-number">0.1</span> .  # 冒号指定标签<br></code></pre></td></tr></table></figure><h2 id="发布image"><a href="#发布image" class="headerlink" title="发布image"></a>发布image</h2><p>总体感觉和git异曲同工</p><ul><li>首先注册一个docker平台的账户</li><li>在本地进行信息配置</li></ul><figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs pf">docker login  <span class="hljs-comment"># 登录docker</span><br><br>docker image <span class="hljs-keyword">tag</span> <span class="hljs-variable">&lt;image_name&gt;</span> <span class="hljs-variable">&lt;username&gt;</span>/<span class="hljs-variable">&lt;repository&gt;</span>:<span class="hljs-variable">&lt;tag&gt;</span>  <span class="hljs-comment"># 为image标注用户名和版本</span><br><br>docker image built -t <span class="hljs-variable">&lt;username&gt;</span>/<span class="hljs-variable">&lt;repository&gt;</span>:<span class="hljs-variable">&lt;tag&gt;</span> <span class="hljs-comment"># 也可以直接重构image</span><br><br>docker image push <span class="hljs-variable">&lt;username&gt;</span>/<span class="hljs-variable">&lt;repository&gt;</span>:<span class="hljs-variable">&lt;tag&gt;</span> <span class="hljs-comment"># 推送image到远程</span><br><br></code></pre></td></tr></table></figure><h2 id="进阶命令"><a href="#进阶命令" class="headerlink" title="进阶命令"></a>进阶命令</h2><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">docker container start <span class="hljs-variable">&lt;container_ID&gt;</span>  <span class="hljs-comment"># 重用某个容器</span><br><br>docker container logs <span class="hljs-variable">&lt;container_ID&gt;</span>  <span class="hljs-comment"># 当运行的时候没有加入-it参数就需要在运行后使用该命令查看输出 也就是容器内的shell输出</span><br><br>docker container exec -it <span class="hljs-variable">&lt;container_ID&gt;</span> <span class="hljs-comment"># 运行时没有使用-it 就需要用该指令进入正在运行的container</span><br><br>docker container cp <span class="hljs-variable">&lt;container_ID&gt;</span>: <span class="hljs-variable">&lt;本机路径&gt;</span>  <span class="hljs-comment"># 将正在运行的container的文件拷贝到本机</span><br><br>docker container stop <span class="hljs-variable">&lt;container_ID&gt;</span> <span class="hljs-comment"># 留出一个给其收尾工作的时间间隔再终止，但不一定进行了收尾工作</span><br><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>techniques</category>
+      
+      <category>docker</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>学习笔记</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>算法刷题记录</title>
+    <link href="/2025/04/16/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
+    <url>/2025/04/16/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Acwing"><a href="#Acwing" class="headerlink" title="Acwing"></a>Acwing</h1><h2 id="Acwing-算法基础课"><a href="#Acwing-算法基础课" class="headerlink" title="Acwing 算法基础课"></a>Acwing 算法基础课</h2><p>二刷ing</p><p>第一章 √</p><p>第二章 ing</p><p>第三章</p><p>第四章</p><p>第五章</p><p>第六章</p><h1 id="leetcode"><a href="#leetcode" class="headerlink" title="leetcode"></a>leetcode</h1><p>代码随想录 67</p><p>Hot 100</p><h1 id="洛谷"><a href="#洛谷" class="headerlink" title="洛谷"></a>洛谷</h1>]]></content>
+    
+    
+    <categories>
+      
+      <category>techniques</category>
+      
+      <category>algorithm</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>内存池</title>
     <link href="/2025/04/15/%E5%86%85%E5%AD%98%E6%B1%A0/"/>
     <url>/2025/04/15/%E5%86%85%E5%AD%98%E6%B1%A0/</url>
