@@ -4,6 +4,158 @@
   
   
   <entry>
+    <title>李沐深度学习环境配置</title>
+    <link href="/2025/04/29/%E6%9D%8E%E6%B2%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
+    <url>/2025/04/29/%E6%9D%8E%E6%B2%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</url>
+    
+    <content type="html"><![CDATA[<h1 id="深度学习环境配置"><a href="#深度学习环境配置" class="headerlink" title="深度学习环境配置"></a>深度学习环境配置</h1><h2 id="SSH密钥生成"><a href="#SSH密钥生成" class="headerlink" title="SSH密钥生成"></a>SSH密钥生成</h2><p>为了避免覆盖原有的密钥，得指定对应的保存路径</p><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-comment"># 生成密钥  但是我的不行</span><br>ssh-keygen -t ed25519 -C <span class="hljs-string">&quot;your_email<span class="hljs-variable">@example</span>.com&quot;</span> -f ~<span class="hljs-regexp">/.ssh/ali</span>yun_ubuntu_key<br><br><span class="hljs-comment"># 由于未知原因 得使用以下命令才不会导致No such file or directory</span><br>ssh-keygen -t ed25519 -C <span class="hljs-string">&quot;your_email<span class="hljs-variable">@example</span>.com&quot;</span> -f <span class="hljs-string">&quot;<span class="hljs-variable">$env</span>:USERPROFILE\.ssh\my_new_key&quot;</span><br><span class="hljs-comment"># $env:USERPROFILE 为环境变量</span><br><br><span class="hljs-comment"># 通过cat拿到密钥</span><br>cat <span class="hljs-string">&quot;<span class="hljs-variable">$env</span>:USERPROFILE\.ssh\my_new_key&quot;</span><br><br></code></pre></td></tr></table></figure><h2 id="在远端配置该密钥"><a href="#在远端配置该密钥" class="headerlink" title="在远端配置该密钥"></a>在远端配置该密钥</h2><p>在阿里云的控制台：</p><p>找到对应实例  最右侧的三个点（更多操作）-&gt; 绑定密钥对 -&gt; 创建密钥对 -&gt; 返回绑定密钥对，选择创建的密钥对 -&gt; 重启</p><h2 id="本地连接"><a href="#本地连接" class="headerlink" title="本地连接"></a>本地连接</h2><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><span class="hljs-comment"># 在powershell 中键入</span><br>ssh -i <span class="hljs-string">&quot;&lt;私钥位置&gt;&quot;</span> root<span class="hljs-meta">@&lt;公网ip&gt;</span> <br><br></code></pre></td></tr></table></figure><p>注意这里是root不是ubuntu</p><p>在阿里云上的ubuntu最开始就只有root所以也只能先登录root这个与视频中的不一致</p><p>如果想要实现如视频中所示的ubuntu用户，只能自行创建，也最好自行创建，否在会在root下执行命令这是有风险的！</p><ul><li>[] 待修正</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 添加账户</span><br>adduser &lt;用户名&gt;<br><span class="hljs-comment"># 然后需要设置密码及一些个人信息</span><br><br>usermode -aG &lt;用户名&gt;<br><br><span class="hljs-built_in">mkdir</span> -p ~/.ssh<br>chmode 700 ~./ssh<br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;公钥&gt;&quot;</span> &gt;&gt; authoriry_keys<br>chmode 600 authoriry_keys<br><br></code></pre></td></tr></table></figure><p>然后就可以通过指定私钥登录该普通用户了</p><p><code>ssh -i &quot;&lt;私钥&gt;&quot; ubuntu@&lt;公网ip&gt;</code></p><h2 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># 退出bash shell</span><br><span class="hljs-attribute">ctrl</span> + D<br><br><span class="hljs-comment"># 终止命令</span><br>ctrl + C<br><br></code></pre></td></tr></table></figure><h2 id="指定pip源"><a href="#指定pip源" class="headerlink" title="指定pip源"></a>指定pip源</h2><p>使用普通用户登陆后pip不再默认是阿里源，得自行指定</p><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><span class="hljs-comment"># 使用-i指定参数</span><br><br>pip -i <span class="hljs-variable">&lt;源地址&gt;</span> <span class="hljs-variable">&lt;包&gt;</span><br><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>techniques</category>
+      
+      <category>deeplearning</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>deeplearning</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>dfs算法</title>
+    <link href="/2025/04/29/dfs%E7%AE%97%E6%B3%95/"/>
+    <url>/2025/04/29/dfs%E7%AE%97%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="dfs算法"><a href="#dfs算法" class="headerlink" title="dfs算法"></a>dfs算法</h1>]]></content>
+    
+    
+    <categories>
+      
+      <category>algorithm</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>dijkstra算法</title>
+    <link href="/2025/04/29/dijkstra%E7%AE%97%E6%B3%95/"/>
+    <url>/2025/04/29/dijkstra%E7%AE%97%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="dijkstra算法"><a href="#dijkstra算法" class="headerlink" title="dijkstra算法"></a>dijkstra算法</h1><ul><li><input disabled="" type="checkbox"> 后续刷完图论算法后做个总结</li></ul><h2 id="算法模板"><a href="#算法模板" class="headerlink" title="算法模板"></a>算法模板</h2><ul><li>初始化距离</li></ul><p>使用了<code>g[][]</code> 和 <code>d[]</code> 分别记录 输入的两个点最短距离 和 最终 1号点到所有节点的最短距离<br>先初始化为一个比最大距离还大的数 <code>0x3f3f3f3f</code></p><ul><li>n次循环 保证有n个节点被访问<ul><li>n次循环 遍历找出与 1 号点最近的未访问节点</li><li>将该点的状态修改为已经访问</li><li>n次循环 遍历更新与 1 号点的距离</li></ul></li></ul><p>判断是否为“无穷大” 是说明无法抵达 否则输出该距离</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>algorithm</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>拓扑排序</title>
+    <link href="/2025/04/29/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/"/>
+    <url>/2025/04/29/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/</url>
+    
+    <content type="html"><![CDATA[<h1 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h1><p>找到入度为0的点  acwing模板的写法</p><p>几个要点：</p><ul><li>存储方式是什么？邻接表还是邻接矩阵</li><li>使用什么数据结构来实现？栈、队列？</li><li>什么时候完成更新度数</li></ul><p>对弹出队列的元素遍历其邻接节点，对每个节点的度数-1</p><ul><li>需要完成的初始化有哪些？</li></ul><p>将所有的元素读入  并且初始化邻接表  </p>]]></content>
+    
+    
+    <categories>
+      
+      <category>algorithm</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>递归算法</title>
+    <link href="/2025/04/28/%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/"/>
+    <url>/2025/04/28/%E9%80%92%E5%BD%92%E7%AE%97%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="递归算法"><a href="#递归算法" class="headerlink" title="递归算法"></a>递归算法</h1><p>递归算法基本思考:</p><ul><li>函数体需要完成哪些内容？</li></ul><p>此时将函数看作已经完成，可以拿到其结果，需要对其进行哪些处理？<br>或者，进入递归前需要先进行什么预处理</p><ul><li>从哪开始递归？</li></ul><p>将从哪里调用本函数，进入递归</p><h1 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h1><p>leetcode 104</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>algorithm</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>双指针算法</title>
+    <link href="/2025/04/28/%E5%8F%8C%E6%8C%87%E9%92%88%E7%AE%97%E6%B3%95/"/>
+    <url>/2025/04/28/%E5%8F%8C%E6%8C%87%E9%92%88%E7%AE%97%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<p>双指针算法一般用来降低暴力算法的时间复杂度, 所以直接想到双指针在开始学习的时候比较难, 但是先想到暴力再进行双指针优化算法会更加容易点<br>往往双指针算法只需要O(n) 即在常数遍历下可以完成</p><p>双指针算法基本思考:</p><ul><li>什么时候更新指针?(两个都要想清楚)</li></ul><p>这是最重要的问题<br>一般而言, 都是一个指针 固定移动 使用for循环方式<br>另一个指针, 则是判断移动 只要满足某个条件就可以不断地移动</p><p>双指针的问题有很多, 得多注意数据的关系, 查看是否有单调性等性质, 否则只能遍历移动, 只是常数级别的优化</p><p>找到性质才可以有:<br>多重遍历 -&gt; 单重遍历(不回退)</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>algorithm</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>docker使用</title>
     <link href="/2025/04/17/docker%E4%BD%BF%E7%94%A8/"/>
     <url>/2025/04/17/docker%E4%BD%BF%E7%94%A8/</url>
@@ -35,7 +187,7 @@
     <link href="/2025/04/16/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
     <url>/2025/04/16/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
     
-    <content type="html"><![CDATA[<h1 id="Acwing"><a href="#Acwing" class="headerlink" title="Acwing"></a>Acwing</h1><h2 id="Acwing-算法基础课"><a href="#Acwing-算法基础课" class="headerlink" title="Acwing 算法基础课"></a>Acwing 算法基础课</h2><p>二刷ing</p><p>第一章 √</p><p>第二章 ing</p><p>第三章</p><p>第四章</p><p>第五章</p><p>第六章</p><h1 id="leetcode"><a href="#leetcode" class="headerlink" title="leetcode"></a>leetcode</h1><p>代码随想录 67</p><p>Hot 100</p><h1 id="洛谷"><a href="#洛谷" class="headerlink" title="洛谷"></a>洛谷</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="Acwing"><a href="#Acwing" class="headerlink" title="Acwing"></a>Acwing</h1><h2 id="Acwing-算法基础课"><a href="#Acwing-算法基础课" class="headerlink" title="Acwing 算法基础课"></a>Acwing 算法基础课</h2><p>二刷ing</p><p>第一章 √</p><p>第二章 √</p><p>第三章</p><p>第四章</p><p>第五章</p><p>第六章</p><h1 id="leetcode"><a href="#leetcode" class="headerlink" title="leetcode"></a>leetcode</h1><p>代码随想录 68</p><p>Hot 100  14</p><h1 id="洛谷"><a href="#洛谷" class="headerlink" title="洛谷"></a>洛谷</h1>]]></content>
     
     
     <categories>
