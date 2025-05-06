@@ -19,15 +19,15 @@
   <meta name="author" content="buyan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="dfs算法">
+    <meta name="description" content="dfs算法深度优先搜索&#x2F;遍历都是使用递归进行 深度优先搜索，可能会对同一个元素进行多次访问，而后者一般只对元素进行一次访问 dfs有多种形式 acwing算法基础课的dfs he 力扣上的岛屿数量 就是不同类型 前者是一个图的形式，后者是网格类型，虽然也可以抽象为图 深度优先搜索一般会涉及到回溯遍历就不需要考虑那么多，只需要一味的遍历访问 算法模板dfs的模板没那么具体 根据需要可以对递">
 <meta property="og:type" content="article">
 <meta property="og:title" content="dfs算法">
 <meta property="og:url" content="http://daobuyan.github.io/2025/04/29/dfs%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="buyan">
-<meta property="og:description" content="dfs算法">
+<meta property="og:description" content="dfs算法深度优先搜索&#x2F;遍历都是使用递归进行 深度优先搜索，可能会对同一个元素进行多次访问，而后者一般只对元素进行一次访问 dfs有多种形式 acwing算法基础课的dfs he 力扣上的岛屿数量 就是不同类型 前者是一个图的形式，后者是网格类型，虽然也可以抽象为图 深度优先搜索一般会涉及到回溯遍历就不需要考虑那么多，只需要一味的遍历访问 算法模板dfs的模板没那么具体 根据需要可以对递">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-29T03:50:52.000Z">
-<meta property="article:modified_time" content="2025-04-29T06:53:10.720Z">
+<meta property="article:modified_time" content="2025-04-30T02:12:10.900Z">
 <meta property="article:author" content="buyan">
 <meta property="article:tag" content="algorithm">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3 字
+          217 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          1 分钟
+          2 分钟
         
       </span>
     
@@ -276,7 +276,15 @@
             
               <div class="markdown-body">
                 
-                <h1 id="dfs算法"><a href="#dfs算法" class="headerlink" title="dfs算法"></a>dfs算法</h1>
+                <h1 id="dfs算法"><a href="#dfs算法" class="headerlink" title="dfs算法"></a>dfs算法</h1><p>深度优先搜索&#x2F;遍历都是使用递归进行</p>
+<p>深度优先搜索，可能会对同一个元素进行多次访问，而后者一般只对元素进行一次访问</p>
+<p>dfs有多种形式</p>
+<p>acwing算法基础课的dfs he 力扣上的岛屿数量 就是不同类型</p>
+<p>前者是一个图的形式，后者是网格类型，虽然也可以抽象为图</p>
+<p>深度优先搜索一般会涉及到回溯<br>遍历就不需要考虑那么多，只需要一味的遍历访问</p>
+<h2 id="算法模板"><a href="#算法模板" class="headerlink" title="算法模板"></a>算法模板</h2><p>dfs的模板没那么具体</p>
+<p>根据需要可以对递归和处理的部分进行修改<br>例如 网格可以往四个方向行进就是递归访问四个部分！ </p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">处理当前的节点<br>递归<br><span class="hljs-bullet">- </span>访问a部分 <br><span class="hljs-bullet">- </span>访问b部分<br><br></code></pre></td></tr></table></figure>
                 
               </div>
             

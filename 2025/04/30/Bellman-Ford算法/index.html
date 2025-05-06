@@ -19,22 +19,22 @@
   <meta name="author" content="buyan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="深度学习环境配置SSH密钥生成为了避免覆盖原有的密钥，得指定对应的保存路径 12345678910# 生成密钥  但是我的不行ssh-keygen -t ed25519 -C &quot;your_email@example.com&quot; -f ~&#x2F;.ssh&#x2F;aliyun_ubuntu_key# 由于未知原因 得使用以下命令才不会导致No such file or directoryssh-">
+    <meta name="description" content="Bellman-Ford 算法算法模板12345678- n次循环    - 备份  # 防止发生串联！    - 遍历所有的边        - dist[b] &#x3D; min(dist[b], dist[a] + w)   # 这个就是松弛操作    这里遍历边，对于边的存储可以随意，只要确保能遍历到每条边即可    这里使用的struct&#123; int a, b, w;&#125;edge">
 <meta property="og:type" content="article">
-<meta property="og:title" content="李沐深度学习环境配置">
-<meta property="og:url" content="http://daobuyan.github.io/2025/04/29/%E6%9D%8E%E6%B2%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="Bellman-Ford算法">
+<meta property="og:url" content="http://daobuyan.github.io/2025/04/30/Bellman-Ford%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="buyan">
-<meta property="og:description" content="深度学习环境配置SSH密钥生成为了避免覆盖原有的密钥，得指定对应的保存路径 12345678910# 生成密钥  但是我的不行ssh-keygen -t ed25519 -C &quot;your_email@example.com&quot; -f ~&#x2F;.ssh&#x2F;aliyun_ubuntu_key# 由于未知原因 得使用以下命令才不会导致No such file or directoryssh-">
+<meta property="og:description" content="Bellman-Ford 算法算法模板12345678- n次循环    - 备份  # 防止发生串联！    - 遍历所有的边        - dist[b] &#x3D; min(dist[b], dist[a] + w)   # 这个就是松弛操作    这里遍历边，对于边的存储可以随意，只要确保能遍历到每条边即可    这里使用的struct&#123; int a, b, w;&#125;edge">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-29T08:14:22.000Z">
-<meta property="article:modified_time" content="2025-04-29T13:12:29.845Z">
+<meta property="article:published_time" content="2025-04-30T06:08:08.000Z">
+<meta property="article:modified_time" content="2025-04-30T07:08:39.476Z">
 <meta property="article:author" content="buyan">
-<meta property="article:tag" content="deeplearning">
+<meta property="article:tag" content="algorithm">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>李沐深度学习环境配置 - buyan</title>
+  <title>Bellman-Ford算法 - buyan</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="李沐深度学习环境配置"></span>
+            <span id="subtitle" data-typed-text="Bellman-Ford算法"></span>
           
         </div>
 
@@ -211,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-29 16:14" pubdate>
-          2025年4月29日 下午
+        <time datetime="2025-04-30 14:08" pubdate>
+          2025年4月30日 下午
         </time>
       </span>
     
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          418 字
+          290 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          4 分钟
+          3 分钟
         
       </span>
     
@@ -271,31 +271,27 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">李沐深度学习环境配置</h1>
+            <h1 id="seo-header">Bellman-Ford算法</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="深度学习环境配置"><a href="#深度学习环境配置" class="headerlink" title="深度学习环境配置"></a>深度学习环境配置</h1><h2 id="SSH密钥生成"><a href="#SSH密钥生成" class="headerlink" title="SSH密钥生成"></a>SSH密钥生成</h2><p>为了避免覆盖原有的密钥，得指定对应的保存路径</p>
-<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-comment"># 生成密钥  但是我的不行</span><br>ssh-keygen -t ed25519 -C <span class="hljs-string">&quot;your_email<span class="hljs-variable">@example</span>.com&quot;</span> -f ~<span class="hljs-regexp">/.ssh/ali</span>yun_ubuntu_key<br><br><span class="hljs-comment"># 由于未知原因 得使用以下命令才不会导致No such file or directory</span><br>ssh-keygen -t ed25519 -C <span class="hljs-string">&quot;your_email<span class="hljs-variable">@example</span>.com&quot;</span> -f <span class="hljs-string">&quot;<span class="hljs-variable">$env</span>:USERPROFILE\.ssh\my_new_key&quot;</span><br><span class="hljs-comment"># $env:USERPROFILE 为环境变量</span><br><br><span class="hljs-comment"># 通过cat拿到密钥</span><br>cat <span class="hljs-string">&quot;<span class="hljs-variable">$env</span>:USERPROFILE\.ssh\my_new_key&quot;</span><br><br></code></pre></td></tr></table></figure>
+                <h1 id="Bellman-Ford-算法"><a href="#Bellman-Ford-算法" class="headerlink" title="Bellman-Ford 算法"></a>Bellman-Ford 算法</h1><h2 id="算法模板"><a href="#算法模板" class="headerlink" title="算法模板"></a>算法模板</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><br>- n次循环<br>    - 备份  <span class="hljs-comment"># 防止发生串联！</span><br>    - 遍历所有的边<br>        - <span class="hljs-keyword">dist[b] </span>= min(<span class="hljs-keyword">dist[b], </span><span class="hljs-keyword">dist[a] </span>+ w)   <span class="hljs-comment"># 这个就是松弛操作</span><br>    这里遍历边，对于边的存储可以随意，只要确保能遍历到每条边即可<br>    这里使用的struct&#123; int a, <span class="hljs-keyword">b, </span>w<span class="hljs-comment">;&#125;edge[M]; </span><br><br></code></pre></td></tr></table></figure>
 
-<h2 id="在远端配置该密钥"><a href="#在远端配置该密钥" class="headerlink" title="在远端配置该密钥"></a>在远端配置该密钥</h2><p>在阿里云的控制台：</p>
-<p>找到对应实例  最右侧的三个点（更多操作）-&gt; 绑定密钥对 -&gt; 创建密钥对 -&gt; 返回绑定密钥对，选择创建的密钥对 -&gt; 重启</p>
-<h2 id="本地连接"><a href="#本地连接" class="headerlink" title="本地连接"></a>本地连接</h2><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><span class="hljs-comment"># 在powershell 中键入</span><br>ssh -i <span class="hljs-string">&quot;&lt;私钥位置&gt;&quot;</span> root<span class="hljs-meta">@&lt;公网ip&gt;</span> <br><br></code></pre></td></tr></table></figure>
-<p>注意这里是root不是ubuntu</p>
-<p>在阿里云上的ubuntu最开始就只有root所以也只能先登录root这个与视频中的不一致</p>
-<p>如果想要实现如视频中所示的ubuntu用户，只能自行创建，也最好自行创建，否在会在root下执行命令这是有风险的！</p>
-<ul>
-<li>[] 待修正</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 添加账户</span><br>adduser &lt;用户名&gt;<br><span class="hljs-comment"># 然后需要设置密码及一些个人信息</span><br><br>usermode -aG &lt;用户名&gt;<br><br><span class="hljs-built_in">mkdir</span> -p ~/.ssh<br>chmode 700 ~./ssh<br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;&lt;公钥&gt;&quot;</span> &gt;&gt; authoriry_keys<br>chmode 600 authoriry_keys<br><br></code></pre></td></tr></table></figure>
+<p>经过哦松弛操作后的所有的边必然满足三角不等式： dist[b] &lt;&#x3D; dist[a] + w</p>
+<p>对于n次循环的作用：</p>
+<p>循环k次意味着经过<strong>不超过k条边</strong>的最短路径被找到</p>
+<p>如果第n次存在被更新的最短路径，那么就意味着存在n条边的最短路径，也就意味着这一路径上一定存在环！而且一定是负环</p>
+<p>时间复杂度 为 O(n*m)</p>
+<h2 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h2><ol>
+<li>负环条件下是否找不到最短路径？</li>
+</ol>
+<p>不一定，如果负环不在最短路径上，那么就可以找到最短路径。</p>
+<ol start="2">
+<li>适用于什么场景？</li>
+</ol>
+<p>允许存在负权边， 可能存在负权回路  且可以寻找边数限制的最短路径！！<br>SPFA则必须不存在负权回路！</p>
 
-<p>然后就可以通过指定私钥登录该普通用户了</p>
-<p><code>ssh -i &quot;&lt;私钥&gt;&quot; ubuntu@&lt;公网ip&gt;</code></p>
-<h2 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># 退出bash shell</span><br><span class="hljs-attribute">ctrl</span> + D<br><br><span class="hljs-comment"># 终止命令</span><br>ctrl + C<br><br></code></pre></td></tr></table></figure>
-
-<h2 id="指定pip源"><a href="#指定pip源" class="headerlink" title="指定pip源"></a>指定pip源</h2><p>使用普通用户登陆后pip不再默认是阿里源，得自行指定</p>
-<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><span class="hljs-comment"># 使用-i指定参数</span><br><br>pip -i <span class="hljs-variable">&lt;源地址&gt;</span> <span class="hljs-variable">&lt;包&gt;</span><br><br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -313,15 +309,8 @@
     
       <span class="category-chain">
         
-  <a href="/categories/techniques/" class="category-chain-item">techniques</a>
+  <a href="/categories/algorithm/" class="category-chain-item">algorithm</a>
   
-  
-    <span>></span>
-    
-  <a href="/categories/techniques/deeplearning/" class="category-chain-item">deeplearning</a>
-  
-  
-
   
 
       </span>
@@ -335,7 +324,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/deeplearning/" class="print-no-link">#deeplearning</a>
+        <a href="/tags/algorithm/" class="print-no-link">#algorithm</a>
       
     </div>
   
@@ -347,8 +336,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>李沐深度学习环境配置</div>
-      <div>http://daobuyan.github.io/2025/04/29/李沐深度学习环境配置/</div>
+      <div>Bellman-Ford算法</div>
+      <div>http://daobuyan.github.io/2025/04/30/Bellman-Ford算法/</div>
     </div>
     <div class="license-meta">
       
@@ -360,7 +349,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年4月29日</div>
+          <div>2025年4月30日</div>
         </div>
       
       
@@ -392,18 +381,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/04/30/Bellman-Ford%E7%AE%97%E6%B3%95/" title="Bellman-Ford算法">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Bellman-Ford算法</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/04/29/dfs%E7%AE%97%E6%B3%95/" title="dfs算法">
-                        <span class="hidden-mobile">dfs算法</span>
+                      <a href="/2025/04/29/%E6%9D%8E%E6%B2%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" title="李沐深度学习环境配置">
+                        <span class="hidden-mobile">李沐深度学习环境配置</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

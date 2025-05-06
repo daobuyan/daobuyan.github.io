@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Bellman-Ford算法</title>
+    <link href="/2025/04/30/Bellman-Ford%E7%AE%97%E6%B3%95/"/>
+    <url>/2025/04/30/Bellman-Ford%E7%AE%97%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Bellman-Ford-算法"><a href="#Bellman-Ford-算法" class="headerlink" title="Bellman-Ford 算法"></a>Bellman-Ford 算法</h1><h2 id="算法模板"><a href="#算法模板" class="headerlink" title="算法模板"></a>算法模板</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><br>- n次循环<br>    - 备份  <span class="hljs-comment"># 防止发生串联！</span><br>    - 遍历所有的边<br>        - <span class="hljs-keyword">dist[b] </span>= min(<span class="hljs-keyword">dist[b], </span><span class="hljs-keyword">dist[a] </span>+ w)   <span class="hljs-comment"># 这个就是松弛操作</span><br>    这里遍历边，对于边的存储可以随意，只要确保能遍历到每条边即可<br>    这里使用的struct&#123; int a, <span class="hljs-keyword">b, </span>w<span class="hljs-comment">;&#125;edge[M]; </span><br><br></code></pre></td></tr></table></figure><p>经过哦松弛操作后的所有的边必然满足三角不等式： dist[b] &lt;&#x3D; dist[a] + w</p><p>对于n次循环的作用：</p><p>循环k次意味着经过<strong>不超过k条边</strong>的最短路径被找到</p><p>如果第n次存在被更新的最短路径，那么就意味着存在n条边的最短路径，也就意味着这一路径上一定存在环！而且一定是负环</p><p>时间复杂度 为 O(n*m)</p><h2 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h2><ol><li>负环条件下是否找不到最短路径？</li></ol><p>不一定，如果负环不在最短路径上，那么就可以找到最短路径。</p><ol start="2"><li>适用于什么场景？</li></ol><p>允许存在负权边， 可能存在负权回路  且可以寻找边数限制的最短路径！！<br>SPFA则必须不存在负权回路！</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>algorithm</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>algorithm</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>李沐深度学习环境配置</title>
     <link href="/2025/04/29/%E6%9D%8E%E6%B2%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
     <url>/2025/04/29/%E6%9D%8E%E6%B2%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</url>
@@ -35,7 +60,7 @@
     <link href="/2025/04/29/dfs%E7%AE%97%E6%B3%95/"/>
     <url>/2025/04/29/dfs%E7%AE%97%E6%B3%95/</url>
     
-    <content type="html"><![CDATA[<h1 id="dfs算法"><a href="#dfs算法" class="headerlink" title="dfs算法"></a>dfs算法</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="dfs算法"><a href="#dfs算法" class="headerlink" title="dfs算法"></a>dfs算法</h1><p>深度优先搜索&#x2F;遍历都是使用递归进行</p><p>深度优先搜索，可能会对同一个元素进行多次访问，而后者一般只对元素进行一次访问</p><p>dfs有多种形式</p><p>acwing算法基础课的dfs he 力扣上的岛屿数量 就是不同类型</p><p>前者是一个图的形式，后者是网格类型，虽然也可以抽象为图</p><p>深度优先搜索一般会涉及到回溯<br>遍历就不需要考虑那么多，只需要一味的遍历访问</p><h2 id="算法模板"><a href="#算法模板" class="headerlink" title="算法模板"></a>算法模板</h2><p>dfs的模板没那么具体</p><p>根据需要可以对递归和处理的部分进行修改<br>例如 网格可以往四个方向行进就是递归访问四个部分！ </p><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">处理当前的节点<br>递归<br><span class="hljs-bullet">- </span>访问a部分 <br><span class="hljs-bullet">- </span>访问b部分<br><br></code></pre></td></tr></table></figure>]]></content>
     
     
     <categories>
@@ -60,7 +85,7 @@
     <link href="/2025/04/29/dijkstra%E7%AE%97%E6%B3%95/"/>
     <url>/2025/04/29/dijkstra%E7%AE%97%E6%B3%95/</url>
     
-    <content type="html"><![CDATA[<h1 id="dijkstra算法"><a href="#dijkstra算法" class="headerlink" title="dijkstra算法"></a>dijkstra算法</h1><ul><li><input disabled="" type="checkbox"> 后续刷完图论算法后做个总结</li></ul><h2 id="算法模板"><a href="#算法模板" class="headerlink" title="算法模板"></a>算法模板</h2><ul><li>初始化距离</li></ul><p>使用了<code>g[][]</code> 和 <code>d[]</code> 分别记录 输入的两个点最短距离 和 最终 1号点到所有节点的最短距离<br>先初始化为一个比最大距离还大的数 <code>0x3f3f3f3f</code></p><ul><li>n次循环 保证有n个节点被访问<ul><li>n次循环 遍历找出与 1 号点最近的未访问节点</li><li>将该点的状态修改为已经访问</li><li>n次循环 遍历更新与 1 号点的距离</li></ul></li></ul><p>判断是否为“无穷大” 是说明无法抵达 否则输出该距离</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="dijkstra算法"><a href="#dijkstra算法" class="headerlink" title="dijkstra算法"></a>dijkstra算法</h1><ul><li><input disabled="" type="checkbox"> 后续刷完图论算法后做个总结</li></ul><h2 id="基础算法模板"><a href="#基础算法模板" class="headerlink" title="基础算法模板"></a>基础算法模板</h2><ul><li><p>初始化距离<br>使用了邻接矩阵<br>使用了<code>g[][]</code> 和 <code>d[]</code> 分别记录 输入的两个点最短距离 和 最终 1号点到所有节点的最短距离<br>先初始化为一个比最大距离还大的数 <code>0x3f3f3f3f</code></p></li><li><p>n次循环 保证有n个节点被访问</p><ul><li>n次循环 遍历找出与 1 号点最近的未访问节点</li><li>将该点的状态修改为已经访问</li><li>n次循环 遍历更新与 1 号点的距离</li></ul></li></ul><p>判断是否为“无穷大” 是说明无法抵达 否则输出该距离</p><h2 id="堆优化算法"><a href="#堆优化算法" class="headerlink" title="堆优化算法"></a>堆优化算法</h2><p>对朴素版本的dijkstra可以得出在循环内的三个过程，时间复杂度分别为 O(n^2), O(n), O(m)</p><p>如果使用优先级队列- 堆，那么就可以降低其时间复杂度为 O(n), O(n), O(mlogn) (这里是稀疏图)</p><p>算法模板：<br>小根堆</p><ul><li>压入堆首节点</li><li>堆非空<ul><li>弹出堆顶</li><li>检查是否已经遍历</li><li>邻接表遍历其邻接点完成更新距离，并且压入堆更新后的距离（也就是说同一节点可能被多次压入，但是率先出堆的一定是小的那个！）</li></ul></li></ul><p>注意使用的是邻接表</p>]]></content>
     
     
     <categories>
