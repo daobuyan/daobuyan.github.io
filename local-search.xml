@@ -4,6 +4,56 @@
   
   
   <entry>
+    <title>lama</title>
+    <link href="/2025/06/08/lama/"/>
+    <url>/2025/06/08/lama/</url>
+    
+    <content type="html"><![CDATA[<p>Comment: Winter Conference on Applications of Computer Vision (WACV 2022)</p><h1 id="专业英语"><a href="#专业英语" class="headerlink" title="专业英语"></a>专业英语</h1><p>image inpainting systems 图像修复系统  </p><p>receptive field 感受野</p><p>the state-of-the-art 最先进的</p><p>side-by-side 并排的</p><p>the complex nature of the problem 问题的复杂性质</p><p>validate 验证</p><p>dilated convolution 空洞卷积</p><h1 id="title"><a href="#title" class="headerlink" title="title"></a>title</h1><p>基于傅里叶卷积的分辨率棒性大掩模修复</p><h1 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h1><p>现代图像修复系统 仍然存在 ：</p><ul><li><p>缺失区域大</p></li><li><p>几何结构复杂</p></li><li><p>图像分辨率高等问题</p></li></ul><p>主要的原因是 缺失感受野。修复网络和损失函数缺失感受野。</p><p>本论文提出了一个新方法名为 large mask  inpainting (LaMa)</p><p>该方法有三个特点：</p><ul><li><p>使用了快速傅里叶卷积</p></li><li><p>高感受野知觉 损失函数</p></li><li><p>大训练掩模</p></li></ul><p>相比竞争基线，降低了时间成本和参数</p><p><strong>重点提取：</strong></p><p>感受野：指​​神经元能够感知的输入数据范围​​</p><h1 id="discussion"><a href="#discussion" class="headerlink" title="discussion"></a>discussion</h1><ul><li><p>LaMa在生成重复视觉结构上具有优势，但是对于强烈的透视失真的时候处理起来仍然存在困难。</p></li><li><p>FFCs可以将方法推广至从未见过的图像高清晰度，且比最先进的基线更具参数有效性</p></li><li><p>使用大感受野的模型将为有效高清晰度计算机视觉模型创造新的机会</p></li></ul><h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p>彩色图片为3通道， mask为2进制的矩阵m。被掩蔽的图象为 x 与 m 的点乘。</p><p>传入model的输入为（x 与 m 的点乘，m）的堆叠，也就是四通道的图像</p><p>经过前馈修复网络后的输出为三通道的图像</p><h2 id="global-context-within-early-layers"><a href="#global-context-within-early-layers" class="headerlink" title="global context within early layers"></a>global context within early layers</h2><p>一个好的架构应该尽早拥有尽可能宽的感受野。传统的卷积模型由于卷积核的原因，可能会存在感受野不足的问题。</p><p>Fast Fourier convolution (FFC) 基于 FFT，拥有一个可以包含整张图片的感受野，允许操作器在上层就使用全局上下文信息。</p><p>具体而言，FFC会将通道分为两个分支，一个local分支，一个global分支。local使用传统卷积，global使用实FFT描述全局上下文。具体流程如下：</p><ul><li><p>将输入使用实FFT进行转换，使用一半的宽度</p></li><li><p>将虚实两部分进行拼接，channel 加倍</p></li><li><p>在频域进行卷积</p></li><li><p>拆分出实部分，并进行逆实FFT</p></li></ul><p>FFCs是完全可微的，并且非常容易替代传统的卷积层。此外，FFCs非常适于捕获周期性的结构。</p><h2 id="loss-functions"><a href="#loss-functions" class="headerlink" title="loss functions"></a>loss functions</h2><p>修复问题本质上是模糊的。对于同一个遮掩可能有多种填充可能。</p><h3 id="high-receptive-field-perceptual-loss"><a href="#high-receptive-field-perceptual-loss" class="headerlink" title="high receptive field perceptual loss"></a>high receptive field perceptual loss</h3><p>朴素的监督模型会因为对多种合理修复结果的平均而导致结果模糊。</p><p>而<strong>感知损失</strong>函数则通过一个基本云训练网络对从预测图像和目标图像中提取的特征的差距进行评估。它不需要精确重构。</p><p>HRFPL的具体计算：</p><ol><li><p>由傅里叶卷积得出结果</p></li><li><p>逐元素进行图像和预测相减，结果进行平方</p></li><li><p>对每个层进行均值计算，再计算层间均值</p></li></ol><p>分类模型由于更关注纹理，会因为引入对高层次信息有害的偏差</p><h3 id="adversarial-loss"><a href="#adversarial-loss" class="headerlink" title="adversarial loss"></a>adversarial loss</h3><p>使用对抗损失来确保修复模型生成自然外观的局部细节。再定义一个工作在局部补丁层次的判别器，判断为真还是假。只有和遮掩区域相交的patch才是假，其余都为真。</p><p>然后进行以下计算：</p><p>L_Adv是优化的连恶化损失</p><h3 id="the-final-loss-function"><a href="#the-final-loss-function" class="headerlink" title="the final loss function"></a>the final loss function</h3><p>最终的损失函数是前文中损失函数的加权和：</p><p>其中1，3参数关注自然外观局部细节</p><p>2参数关注监督信号和全局结构的一致性</p><p>R1梯度惩罚</p><h2 id="generation-of-masks-during-training"><a href="#generation-of-masks-during-training" class="headerlink" title="generation of masks during training"></a>generation of masks during training</h2><p>研究发现，遮掩生成的策略会显著影响修复系统的性能。所以，研究者采用了large mask策略，即使用1）多边形链进行高随机度宽度膨胀遮掩2）使用任意长宽比的矩形遮掩</p><p>经过实验，可以明显的发现使用large mask策略通常可以提高模型对narrow maks 和 wide mask的修复表现。</p><h1 id="experimets"><a href="#experimets" class="headerlink" title="experimets"></a>experimets</h1><p>实验的结果表明，论文提出的技术优于一系列标准低分辨率强基线，尤其是修复更宽空缺的时候，效果更加显著。而且，模型可以在使用更少的参数下，推广至高分辨率，训练集中未见的图像。</p><p>实现细节 和 数据集</p><h2 id="comparisons-to-the-baselines"><a href="#comparisons-to-the-baselines" class="headerlink" title="comparisons to the baselines"></a>comparisons to the baselines</h2><p>仅仅使用公开可使用的模型参与，计算指标。</p><p>论文提出的模型在使用更少的参数的情形下，一致优于大部分的基线。唯二的有力竞争模型，是使用了4倍、3倍的参数数量。在宽遮掩上，更加显著。</p><p>研究者还进行了众包的用户调查。调查结果与定量评估具有良好的相关性。Lama模型收到喜爱，且修复不容易被检测出。</p><h2 id="ablation-study"><a href="#ablation-study" class="headerlink" title="ablation study"></a>ablation study</h2><p>该实验用于研究方法中不同组成元素的影响。</p><p>在将模型运用到比训练使用更高清晰度的情况下，感受野是最重要的。LaMa-Fourier 在仅仅比LaMa-regular 慢了20%的情况下就小了40%。</p><p>空洞卷积是一个傅里叶卷积的替代品。它也可以达到快速增长感受野的效果。虽然存在感受野受限，严重依赖于规模的问题，在推广到更高清晰度的情况下表现不如傅里叶卷积，但是当资源有限的情况下，可以考虑使用空洞卷积。</p><p>经过实验证实，使用了HRFPL的空洞卷积缺失提高了图像修复的质量。代理任务问题和设计选择也同样重要。</p><p>更宽的遮掩也可能降低模型的性能（DeepFill v2 ，EdgeConnect 在更窄的遮掩上的性能所有降低）。研究者假设是由于特定的设计选择引起。</p><h2 id="generalization-to-higher-resolution"><a href="#generalization-to-higher-resolution" class="headerlink" title="generalization to higher resolution"></a>generalization to higher resolution</h2><p>直接在高清晰度图像上训练是缓慢且昂贵的。研究者以全连接的方式使用模型，且通向被整体一次性处理，而不是分成多个patch。</p><p>基于FFC的模型在应用到更高清晰度时候明显用更好效果。研究者假设这样的结果来源于：</p><ul><li><p>图像宽度的感受野</p></li><li><p>经过尺度变换后保留了光谱中的低频</p></li><li><p>频域 1X1卷积 固有的尺度等变性</p></li></ul><p>虽然所有模型都在512X512的清晰度上表现的相当好，但是基于FFC的模型在1536X1536清晰度上保持了更好的质量和一致性。值得注意的是，它使用明显更少的参数成本。</p><h2 id="teaser-model-big-lama"><a href="#teaser-model-big-lama" class="headerlink" title="teaser model: big lama"></a>teaser model: big lama</h2><p>为了证实本方法对真实高清图像的可扩展性和适用性，研究者训练了一个大lama模型。</p><p>区别于一般模型：</p><ul><li><p>生成器深度</p></li><li><p>训练集</p></li><li><p>batch大小  120（一般是30）</p></li></ul><p>总计有51M参数，使用从低清晰度512X512图像裁剪256X256的图像。</p><p>但是模型仍然比一些基线模型要小。使用8 张NVidia V100 GPUs 训练了大约240小时。</p><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><ol><li><p>这里的loss采用不同的函数，是怎么样实现快速感受野增长？</p></li><li><p>什么是perceptual loss ?<br> 引入人眼视觉系统（HVS）特性，关注物体轮廓、纹理一致性等高层信息，提升生成图像的视觉真实感.</p></li><li><p>区分large  mask wide mask narrow mask</p><ul><li><p>​<strong>​Large Mask 是广义概念​</strong>​，包含 Wide Mask 和 Box Mask（大矩形），强调“大面积缺失”这一共性</p></li><li><p>​<strong>​Wide Mask 是 Large Mask 的子类​</strong>​，特指通过多边形链（Polygonal Chains）膨胀生成的细长掩膜</p></li><li><p>​<strong>​Narrow Mask 与 Large&#x2F;Wide 对立​</strong>​，代表传统方法擅长的小范围修复场景</p></li></ul></li><li><p>什么是频域？尺度等变性是什么?这二者是如何联系的？</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>论文</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>论文</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>attention_is_all_you_need</title>
+    <link href="/2025/06/08/attention-is-all-you-need/"/>
+    <url>/2025/06/08/attention-is-all-you-need/</url>
+    
+    <content type="html"><![CDATA[<p>Comment: 15 pages, 5 figures</p><h1 id="补充信息"><a href="#补充信息" class="headerlink" title="补充信息"></a>补充信息</h1><h2 id="神经网络基础"><a href="#神经网络基础" class="headerlink" title="神经网络基础"></a>神经网络基础</h2><ul><li>神经网络可以分为 前馈神经网络 和 反馈神经网络</li></ul><h2 id="专业英语积累"><a href="#专业英语积累" class="headerlink" title="专业英语积累"></a>专业英语积累</h2><p>fully connected  全连接</p><p>residual connection 残差连接</p><p>scaled 经过缩放的</p><p>transduction 转导</p><p>to this end 为此</p><h1 id="论文重点"><a href="#论文重点" class="headerlink" title="论文重点"></a>论文重点</h1><h2 id="Model-Architecture"><a href="#Model-Architecture" class="headerlink" title="Model Architecture"></a>Model Architecture</h2><h3 id="简单记录"><a href="#简单记录" class="headerlink" title="简单记录"></a>简单记录</h3><ul><li>解码器和编码器</li></ul><p>先阐述了encoder 和 decoder 的 作用， 注意这里的类似(x1, x2,  …, xn )中x1 等内容都是向量，也就是说这里是矩阵</p><p>Figure 1 左侧是encoder 右侧是decoder</p><p>这里是文章中所说的一个sub-layer</p><ul><li>残差连接</li></ul><p>残差连接 ：通过将子层（如自注意力或前馈网络）的输入直接与输出相加，形成跳跃路径（Skip Connection）</p><p>残差神经网络有何作用？</p><p>1）缓解深层网络的梯度消失问题（通过加法操作保留原始信息）</p><p>2）提升训练稳定性（即使子层输出接近零，输入信息仍可传递）</p><ul><li>层归一化</li></ul><p>层归一化：对每个样本的特征维度进行标准化处理</p><p>作用？</p><p>避免深层网络退化（归一化抑制参数爆炸）</p><ul><li>自注意层</li></ul><p>自注意子层被修改，防止对当前位置的预测 与 后续位置的下文有关</p><h3 id="3-2-3-Application-of-Attention-in-our-Model"><a href="#3-2-3-Application-of-Attention-in-our-Model" class="headerlink" title="3.2.3 Application of Attention in our Model"></a>3.2.3 Application of Attention in our Model</h3><p>讲解了encoder 和 decoder 中的self-attention机制。</p><ul><li><p>cross-attention 是 encoder的keys values + decoder 的 queries</p></li><li><p>内部的自注意力层是传递QKV自上一层</p></li><li><p>这里涉及到了“自回归” “左向移动“，</p></li></ul><p>    自回归：在生成任务（如文本生成、语音合成）中，模型每次<strong>只生成一个输出元素</strong>（例如一个词），并且该元素的生成<strong>严格依赖于它之前已经生成的所有元素</strong>。</p><p>    <strong>“信息左移”</strong> 指的是：在计算当前时刻 <code>t</code> 的表示或注意力时，<strong>无意中混入了来自未来时刻 (</strong><code>t+1, t+2, ...</code>) 的信息。</p><ul><li>通过mask实现自回归。通过mask屏蔽非法连接，指代当前生成序列之后的词。将非法的设置为负无穷。</li></ul><h3 id="3-3-Position-wise-Feed-Forward-Networks"><a href="#3-3-Position-wise-Feed-Forward-Networks" class="headerlink" title="3.3 Position-wise Feed-Forward Networks"></a>3.3 Position-wise Feed-Forward Networks</h3><p>主要讲了 位置前馈神经网络具体的实现。</p><p>是两层linear全连接神经网络组成的，第一层使用Relu激活函数，第二层使用恒等函数</p><h3 id="3-4-Embeddings-and-Softmax"><a href="#3-4-Embeddings-and-Softmax" class="headerlink" title="3.4 Embeddings and Softmax"></a>3.4 Embeddings and Softmax</h3><p>使用已经学习过的嵌入层将输入和输出转化为d_model &#x3D; 512 的向量。</p><p>再使用一个线性变换层和softmax激活函数将输出转化为概率</p><p>而且， 这里的两个嵌入层和这里的线性层之间共享的同一个权重矩阵</p><h3 id="3-5-Positional-Encoding"><a href="#3-5-Positional-Encoding" class="headerlink" title="3.5 Positional Encoding"></a>3.5 Positional Encoding</h3><p>位置信息需要单独地编码进输入数据。选择了正弦函数和余弦函数来进行位置信息编码。即便使用学习的postion embedding也相差不大，且可以允许外推到比训练长度更长的序列，所以使用了sin cos函数</p><h2 id="4-Why-Self-Attention"><a href="#4-Why-Self-Attention" class="headerlink" title="4 Why Self-Attention"></a>4 Why Self-Attention</h2><p>将自注意力神经网络 与 循环神经网络、卷积神经网络做对比。主要是从三个方面，分别是：</p><ul><li><p>每层的总计算复杂度</p></li><li><p>可并行化计算量</p></li><li><p><strong>网络中长距离依赖之间的路径长度</strong></p></li></ul><h1 id="代码实现的细节"><a href="#代码实现的细节" class="headerlink" title="代码实现的细节"></a>代码实现的细节</h1><ul><li><p>所有子层的输出中 d_model &#x3D; 512</p></li><li><p>残差连接 + 归一化层</p><ul><li>LayerNorm(x + Sublayer(x))</li></ul></li><li><p>encoder decoder 都是 N &#x3D; 6 的相同子层</p></li><li><p>多头注意力层</p><ul><li>d_k &#x3D; d_v &#x3D; d_model &#x2F; h  &#x3D; 64<br>  每个注意力头内的维度</li></ul></li><li><p>decoder encoder 的交汇，是将encoder的keys values的输出传入decoder</p></li></ul><h1 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h1><ol><li><p>d_model的具体含义？</p><p> 这里的d_model 是实际中的我们想要将一个序列元素 展开成 一个 d_model的向量，内含了该元素的各个信息</p><p> 在后面还会包含上下文信息</p></li><li><p>Q K V在实例中具体理解</p><ul><li><p>Q*K_T 是这里的“注意力权重”</p></li><li><p>它与V的点乘就是最终包含了注意力的结果</p></li></ul><p> 这里可以反向思考，K 应该是特征，那么Q是什么，才能得出注意力？很明显是 需要什么特征，这样经过点乘，我就知道哪些value重要 </p></li><li><p>d_k d_v在体系中扮演什么成分？</p></li><li><p>注意力机制到底是什么？（请用自己的话讲清楚)</p><p> 注意机制就是我使用三个权重矩阵，将</p></li><li><p>注意力机制计算公式中为什么要除去d_k?</p><p> softmax计算会先代入一个自然指数，所以会放大差距。该操作可以减小二者的差距，这样可以减小最后的权重的差距，避免无效学习</p></li><li><p>在计算Scaled Dot-Product Attention过程中，mask的作用是什么？</p><p> 防止当前输出看见后面的内容，给当前时间后的设置为非常小的负数，这样经过softmax函数之后就会变成0</p><ul><li>这个和手写的应该不是同一种方式</li></ul></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>论文</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>论文</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Bellman-Ford算法</title>
     <link href="/2025/04/30/Bellman-Ford%E7%AE%97%E6%B3%95/"/>
     <url>/2025/04/30/Bellman-Ford%E7%AE%97%E6%B3%95/</url>

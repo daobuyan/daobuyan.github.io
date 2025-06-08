@@ -19,22 +19,22 @@
   <meta name="author" content="buyan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Bellman-Ford 算法算法模板12345678- n次循环    - 备份  # 防止发生串联！    - 遍历所有的边        - dist[b] &#x3D; min(dist[b], dist[a] + w)   # 这个就是松弛操作    这里遍历边，对于边的存储可以随意，只要确保能遍历到每条边即可    这里使用的struct&#123; int a, b, w;&#125;edge">
+    <meta name="description" content="Comment: Winter Conference on Applications of Computer Vision (WACV 2022) 专业英语image inpainting systems 图像修复系统   receptive field 感受野 the state-of-the-art 最先进的 side-by-side 并排的 the complex nature of the">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bellman-Ford算法">
-<meta property="og:url" content="http://daobuyan.github.io/2025/04/30/Bellman-Ford%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:title" content="lama">
+<meta property="og:url" content="http://daobuyan.github.io/2025/06/08/lama/index.html">
 <meta property="og:site_name" content="buyan">
-<meta property="og:description" content="Bellman-Ford 算法算法模板12345678- n次循环    - 备份  # 防止发生串联！    - 遍历所有的边        - dist[b] &#x3D; min(dist[b], dist[a] + w)   # 这个就是松弛操作    这里遍历边，对于边的存储可以随意，只要确保能遍历到每条边即可    这里使用的struct&#123; int a, b, w;&#125;edge">
+<meta property="og:description" content="Comment: Winter Conference on Applications of Computer Vision (WACV 2022) 专业英语image inpainting systems 图像修复系统   receptive field 感受野 the state-of-the-art 最先进的 side-by-side 并排的 the complex nature of the">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-30T06:08:08.000Z">
-<meta property="article:modified_time" content="2025-04-30T07:08:39.476Z">
+<meta property="article:published_time" content="2025-06-08T14:45:48.000Z">
+<meta property="article:modified_time" content="2025-06-08T14:47:13.642Z">
 <meta property="article:author" content="buyan">
-<meta property="article:tag" content="algorithm">
+<meta property="article:tag" content="论文">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Bellman-Ford算法 - buyan</title>
+  <title>lama - buyan</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Bellman-Ford算法"></span>
+            <span id="subtitle" data-typed-text="lama"></span>
           
         </div>
 
@@ -211,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-30 14:08" pubdate>
-          2025年4月30日 下午
+        <time datetime="2025-06-08 22:45" pubdate>
+          2025年6月8日 晚上
         </time>
       </span>
     
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          290 字
+          2k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          3 分钟
+          17 分钟
         
       </span>
     
@@ -271,26 +271,141 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Bellman-Ford算法</h1>
+            <h1 id="seo-header">lama</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Bellman-Ford-算法"><a href="#Bellman-Ford-算法" class="headerlink" title="Bellman-Ford 算法"></a>Bellman-Ford 算法</h1><h2 id="算法模板"><a href="#算法模板" class="headerlink" title="算法模板"></a>算法模板</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><br>- n次循环<br>    - 备份  <span class="hljs-comment"># 防止发生串联！</span><br>    - 遍历所有的边<br>        - <span class="hljs-keyword">dist[b] </span>= min(<span class="hljs-keyword">dist[b], </span><span class="hljs-keyword">dist[a] </span>+ w)   <span class="hljs-comment"># 这个就是松弛操作</span><br>    这里遍历边，对于边的存储可以随意，只要确保能遍历到每条边即可<br>    这里使用的struct&#123; int a, <span class="hljs-keyword">b, </span>w<span class="hljs-comment">;&#125;edge[M]; </span><br><br></code></pre></td></tr></table></figure>
-
-<p>经过哦松弛操作后的所有的边必然满足三角不等式： dist[b] &lt;&#x3D; dist[a] + w</p>
-<p>对于n次循环的作用：</p>
-<p>循环k次意味着经过<strong>不超过k条边</strong>的最短路径被找到</p>
-<p>如果第n次存在被更新的最短路径，那么就意味着存在n条边的最短路径，也就意味着这一路径上一定存在环！而且一定是负环</p>
-<p>时间复杂度 为 O(n*m)</p>
-<h2 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h2><ol>
-<li>负环条件下是否找不到最短路径？</li>
+                <p>Comment: Winter Conference on Applications of Computer Vision (WACV 2022)</p>
+<h1 id="专业英语"><a href="#专业英语" class="headerlink" title="专业英语"></a>专业英语</h1><p>image inpainting systems 图像修复系统  </p>
+<p>receptive field 感受野</p>
+<p>the state-of-the-art 最先进的</p>
+<p>side-by-side 并排的</p>
+<p>the complex nature of the problem 问题的复杂性质</p>
+<p>validate 验证</p>
+<p>dilated convolution 空洞卷积</p>
+<h1 id="title"><a href="#title" class="headerlink" title="title"></a>title</h1><p>基于傅里叶卷积的分辨率棒性大掩模修复</p>
+<h1 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h1><p>现代图像修复系统 仍然存在 ：</p>
+<ul>
+<li><p>缺失区域大</p>
+</li>
+<li><p>几何结构复杂</p>
+</li>
+<li><p>图像分辨率高等问题</p>
+</li>
+</ul>
+<p>主要的原因是 缺失感受野。修复网络和损失函数缺失感受野。</p>
+<p>本论文提出了一个新方法名为 large mask  inpainting (LaMa)</p>
+<p>该方法有三个特点：</p>
+<ul>
+<li><p>使用了快速傅里叶卷积</p>
+</li>
+<li><p>高感受野知觉 损失函数</p>
+</li>
+<li><p>大训练掩模</p>
+</li>
+</ul>
+<p>相比竞争基线，降低了时间成本和参数</p>
+<p><strong>重点提取：</strong></p>
+<p>感受野：指​​神经元能够感知的输入数据范围​​</p>
+<h1 id="discussion"><a href="#discussion" class="headerlink" title="discussion"></a>discussion</h1><ul>
+<li><p>LaMa在生成重复视觉结构上具有优势，但是对于强烈的透视失真的时候处理起来仍然存在困难。</p>
+</li>
+<li><p>FFCs可以将方法推广至从未见过的图像高清晰度，且比最先进的基线更具参数有效性</p>
+</li>
+<li><p>使用大感受野的模型将为有效高清晰度计算机视觉模型创造新的机会</p>
+</li>
+</ul>
+<h1 id="method"><a href="#method" class="headerlink" title="method"></a>method</h1><p>彩色图片为3通道， mask为2进制的矩阵m。被掩蔽的图象为 x 与 m 的点乘。</p>
+<p>传入model的输入为（x 与 m 的点乘，m）的堆叠，也就是四通道的图像</p>
+<p>经过前馈修复网络后的输出为三通道的图像</p>
+<h2 id="global-context-within-early-layers"><a href="#global-context-within-early-layers" class="headerlink" title="global context within early layers"></a>global context within early layers</h2><p>一个好的架构应该尽早拥有尽可能宽的感受野。传统的卷积模型由于卷积核的原因，可能会存在感受野不足的问题。</p>
+<p>Fast Fourier convolution (FFC) 基于 FFT，拥有一个可以包含整张图片的感受野，允许操作器在上层就使用全局上下文信息。</p>
+<p>具体而言，FFC会将通道分为两个分支，一个local分支，一个global分支。local使用传统卷积，global使用实FFT描述全局上下文。具体流程如下：</p>
+<ul>
+<li><p>将输入使用实FFT进行转换，使用一半的宽度</p>
+</li>
+<li><p>将虚实两部分进行拼接，channel 加倍</p>
+</li>
+<li><p>在频域进行卷积</p>
+</li>
+<li><p>拆分出实部分，并进行逆实FFT</p>
+</li>
+</ul>
+<p>FFCs是完全可微的，并且非常容易替代传统的卷积层。此外，FFCs非常适于捕获周期性的结构。</p>
+<h2 id="loss-functions"><a href="#loss-functions" class="headerlink" title="loss functions"></a>loss functions</h2><p>修复问题本质上是模糊的。对于同一个遮掩可能有多种填充可能。</p>
+<h3 id="high-receptive-field-perceptual-loss"><a href="#high-receptive-field-perceptual-loss" class="headerlink" title="high receptive field perceptual loss"></a>high receptive field perceptual loss</h3><p>朴素的监督模型会因为对多种合理修复结果的平均而导致结果模糊。</p>
+<p>而<strong>感知损失</strong>函数则通过一个基本云训练网络对从预测图像和目标图像中提取的特征的差距进行评估。它不需要精确重构。</p>
+<p>HRFPL的具体计算：</p>
+<ol>
+<li><p>由傅里叶卷积得出结果</p>
+</li>
+<li><p>逐元素进行图像和预测相减，结果进行平方</p>
+</li>
+<li><p>对每个层进行均值计算，再计算层间均值</p>
+</li>
 </ol>
-<p>不一定，如果负环不在最短路径上，那么就可以找到最短路径。</p>
-<ol start="2">
-<li>适用于什么场景？</li>
+<p>分类模型由于更关注纹理，会因为引入对高层次信息有害的偏差</p>
+<h3 id="adversarial-loss"><a href="#adversarial-loss" class="headerlink" title="adversarial loss"></a>adversarial loss</h3><p>使用对抗损失来确保修复模型生成自然外观的局部细节。再定义一个工作在局部补丁层次的判别器，判断为真还是假。只有和遮掩区域相交的patch才是假，其余都为真。</p>
+<p>然后进行以下计算：</p>
+<p>L_Adv是优化的连恶化损失</p>
+<h3 id="the-final-loss-function"><a href="#the-final-loss-function" class="headerlink" title="the final loss function"></a>the final loss function</h3><p>最终的损失函数是前文中损失函数的加权和：</p>
+<p>其中1，3参数关注自然外观局部细节</p>
+<p>2参数关注监督信号和全局结构的一致性</p>
+<p>R1梯度惩罚</p>
+<h2 id="generation-of-masks-during-training"><a href="#generation-of-masks-during-training" class="headerlink" title="generation of masks during training"></a>generation of masks during training</h2><p>研究发现，遮掩生成的策略会显著影响修复系统的性能。所以，研究者采用了large mask策略，即使用1）多边形链进行高随机度宽度膨胀遮掩2）使用任意长宽比的矩形遮掩</p>
+<p>经过实验，可以明显的发现使用large mask策略通常可以提高模型对narrow maks 和 wide mask的修复表现。</p>
+<h1 id="experimets"><a href="#experimets" class="headerlink" title="experimets"></a>experimets</h1><p>实验的结果表明，论文提出的技术优于一系列标准低分辨率强基线，尤其是修复更宽空缺的时候，效果更加显著。而且，模型可以在使用更少的参数下，推广至高分辨率，训练集中未见的图像。</p>
+<p>实现细节 和 数据集</p>
+<h2 id="comparisons-to-the-baselines"><a href="#comparisons-to-the-baselines" class="headerlink" title="comparisons to the baselines"></a>comparisons to the baselines</h2><p>仅仅使用公开可使用的模型参与，计算指标。</p>
+<p>论文提出的模型在使用更少的参数的情形下，一致优于大部分的基线。唯二的有力竞争模型，是使用了4倍、3倍的参数数量。在宽遮掩上，更加显著。</p>
+<p>研究者还进行了众包的用户调查。调查结果与定量评估具有良好的相关性。Lama模型收到喜爱，且修复不容易被检测出。</p>
+<h2 id="ablation-study"><a href="#ablation-study" class="headerlink" title="ablation study"></a>ablation study</h2><p>该实验用于研究方法中不同组成元素的影响。</p>
+<p>在将模型运用到比训练使用更高清晰度的情况下，感受野是最重要的。LaMa-Fourier 在仅仅比LaMa-regular 慢了20%的情况下就小了40%。</p>
+<p>空洞卷积是一个傅里叶卷积的替代品。它也可以达到快速增长感受野的效果。虽然存在感受野受限，严重依赖于规模的问题，在推广到更高清晰度的情况下表现不如傅里叶卷积，但是当资源有限的情况下，可以考虑使用空洞卷积。</p>
+<p>经过实验证实，使用了HRFPL的空洞卷积缺失提高了图像修复的质量。代理任务问题和设计选择也同样重要。</p>
+<p>更宽的遮掩也可能降低模型的性能（DeepFill v2 ，EdgeConnect 在更窄的遮掩上的性能所有降低）。研究者假设是由于特定的设计选择引起。</p>
+<h2 id="generalization-to-higher-resolution"><a href="#generalization-to-higher-resolution" class="headerlink" title="generalization to higher resolution"></a>generalization to higher resolution</h2><p>直接在高清晰度图像上训练是缓慢且昂贵的。研究者以全连接的方式使用模型，且通向被整体一次性处理，而不是分成多个patch。</p>
+<p>基于FFC的模型在应用到更高清晰度时候明显用更好效果。研究者假设这样的结果来源于：</p>
+<ul>
+<li><p>图像宽度的感受野</p>
+</li>
+<li><p>经过尺度变换后保留了光谱中的低频</p>
+</li>
+<li><p>频域 1X1卷积 固有的尺度等变性</p>
+</li>
+</ul>
+<p>虽然所有模型都在512X512的清晰度上表现的相当好，但是基于FFC的模型在1536X1536清晰度上保持了更好的质量和一致性。值得注意的是，它使用明显更少的参数成本。</p>
+<h2 id="teaser-model-big-lama"><a href="#teaser-model-big-lama" class="headerlink" title="teaser model: big lama"></a>teaser model: big lama</h2><p>为了证实本方法对真实高清图像的可扩展性和适用性，研究者训练了一个大lama模型。</p>
+<p>区别于一般模型：</p>
+<ul>
+<li><p>生成器深度</p>
+</li>
+<li><p>训练集</p>
+</li>
+<li><p>batch大小  120（一般是30）</p>
+</li>
+</ul>
+<p>总计有51M参数，使用从低清晰度512X512图像裁剪256X256的图像。</p>
+<p>但是模型仍然比一些基线模型要小。使用8 张NVidia V100 GPUs 训练了大约240小时。</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><ol>
+<li><p>这里的loss采用不同的函数，是怎么样实现快速感受野增长？</p>
+</li>
+<li><p>什么是perceptual loss ?<br> 引入人眼视觉系统（HVS）特性，关注物体轮廓、纹理一致性等高层信息，提升生成图像的视觉真实感.</p>
+</li>
+<li><p>区分large  mask wide mask narrow mask</p>
+<ul>
+<li><p>​<strong>​Large Mask 是广义概念​</strong>​，包含 Wide Mask 和 Box Mask（大矩形），强调“大面积缺失”这一共性</p>
+</li>
+<li><p>​<strong>​Wide Mask 是 Large Mask 的子类​</strong>​，特指通过多边形链（Polygonal Chains）膨胀生成的细长掩膜</p>
+</li>
+<li><p>​<strong>​Narrow Mask 与 Large&#x2F;Wide 对立​</strong>​，代表传统方法擅长的小范围修复场景</p>
+</li>
+</ul>
+</li>
+<li><p>什么是频域？尺度等变性是什么?这二者是如何联系的？</p>
+</li>
 </ol>
-<p>允许存在负权边， 可能存在负权回路  且可以寻找边数限制的最短路径！！<br>SPFA则必须不存在负权回路！</p>
 
                 
               </div>
@@ -309,7 +424,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/algorithm/" class="category-chain-item">algorithm</a>
+  <a href="/categories/%E8%AE%BA%E6%96%87/" class="category-chain-item">论文</a>
   
   
 
@@ -324,7 +439,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/algorithm/" class="print-no-link">#algorithm</a>
+        <a href="/tags/%E8%AE%BA%E6%96%87/" class="print-no-link">#论文</a>
       
     </div>
   
@@ -336,8 +451,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Bellman-Ford算法</div>
-      <div>http://daobuyan.github.io/2025/04/30/Bellman-Ford算法/</div>
+      <div>lama</div>
+      <div>http://daobuyan.github.io/2025/06/08/lama/</div>
     </div>
     <div class="license-meta">
       
@@ -349,7 +464,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年4月30日</div>
+          <div>2025年6月8日</div>
         </div>
       
       
@@ -381,18 +496,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/06/08/attention-is-all-you-need/" title="attention_is_all_you_need">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">attention_is_all_you_need</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/04/29/%E6%9D%8E%E6%B2%90%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" title="李沐深度学习环境配置">
-                        <span class="hidden-mobile">李沐深度学习环境配置</span>
+                      <a href="/2025/06/08/attention-is-all-you-need/" title="attention_is_all_you_need">
+                        <span class="hidden-mobile">attention_is_all_you_need</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
